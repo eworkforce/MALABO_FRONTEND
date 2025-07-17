@@ -7,15 +7,15 @@ import { ProductCardSkeleton } from "./product-card-skeleton";
 
 import { type Product } from "@/types/medusa";
 
-const fetchProducts = async (): Promise<Product[]> => {
-  const { products } = await medusaClient.products.list();
+const fetchProducts = async (limit?: number, category_id?: string[]): Promise<Product[]> => {
+  const { products } = await medusaClient.products.list(limit ? { limit, category_id } : { category_id });
   return products;
 };
 
-export function ProductGrid() {
+export function ProductGrid({ limit, category_id }: { limit?: number, category_id?: string[] }) {
   const { data, isLoading, isError, error } = useQuery<Product[]>({
-    queryKey: ["products"],
-    queryFn: fetchProducts,
+    queryKey: ["products", limit, category_id],
+    queryFn: () => fetchProducts(limit, category_id),
   });
 
   if (isLoading) {

@@ -5,3 +5,13 @@ This file tracks the Shadcn/UI components that have been installed in this proje
 ## Installed Components:
 
 - Card
+- Accordion
+- Checkbox
+- Sheet
+- Input
+- Label
+- Button
+- Table
+- Separator
+- Radio Group
+- Textarea
