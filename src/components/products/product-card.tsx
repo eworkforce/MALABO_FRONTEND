@@ -16,34 +16,40 @@ const formatPrice = (amount: number, currencyCode: string) => {
 };
 
 export function ProductCard({ product }: ProductCardProps) {
-  // TODO: Price will be passed as a prop once data fetching is implemented in the parent.
+  const firstVariant = product.variants?.[0];
+  const firstPrice = firstVariant?.prices?.[0];
+
+  // The product handle is required for the link, so we return null if it's missing.
+  if (!product.handle) {
+    return null;
+  }
 
   return (
-    <Link href={`/products/${product.id}`} passHref>
-      <Card className="h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-lg">
-        <CardHeader>
-          <CardTitle className="text-lg truncate">{product.title}</CardTitle>
-          <CardDescription>
-            Price: {product.variants?.[0]?.calculated_price}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="flex-grow flex items-center justify-center p-0">
+    <Link href={`/products/${product.handle}`} passHref>
+      <Card className="h-full flex flex-col overflow-hidden transition-shadow duration-300 hover:shadow-lg cursor-pointer group">
+        <CardContent className="flex-grow flex items-center justify-center p-0 relative aspect-square">
           {product.thumbnail ? (
             <Image
               src={product.thumbnail}
               alt={product.title ?? 'Product image'}
-              width={300}
-              height={300}
-              className="object-cover w-full h-full"
+              fill
+              className="object-cover transition-transform duration-300 group-hover:scale-105"
             />
           ) : (
-            <div className="w-full h-48 bg-gray-200 flex items-center justify-center">
-              <span className="text-gray-500">No image</span>
+            <div className="w-full h-full bg-slate-200 flex items-center justify-center">
+              <span className="text-slate-500">No image</span>
             </div>
           )}
         </CardContent>
-        <CardFooter className="pt-4">
-          <p className="text-lg text-gray-500">À partir de ...</p>
+        <CardFooter className="pt-4 flex-col items-start">
+          <CardTitle className="text-lg truncate mb-1">{product.title}</CardTitle>
+          <CardDescription className="text-base font-semibold text-slate-800">
+            {firstPrice ? (
+              formatPrice(firstPrice.amount, firstPrice.currency_code)
+            ) : (
+              <span className="text-slate-500">Price not available</span>
+            )}
+          </CardDescription>
         </CardFooter>
       </Card>
     </Link>

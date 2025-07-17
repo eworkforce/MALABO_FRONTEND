@@ -1,14 +1,14 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import client from "@/lib/medusa-client";
+import medusaClient from "@/lib/medusa-client";
 import { ProductCard } from "./product-card";
-
+import { ProductCardSkeleton } from "./product-card-skeleton";
 
 import { type Product } from "@/types/medusa";
 
 const fetchProducts = async (): Promise<Product[]> => {
-  const { products } = await client.products.list();
+  const { products } = await medusaClient.products.list();
   return products;
 };
 
@@ -19,7 +19,13 @@ export function ProductGrid() {
   });
 
   if (isLoading) {
-    return <div>Chargement des produits...</div>;
+    return (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <ProductCardSkeleton key={i} />
+        ))}
+      </div>
+    );
   }
 
   if (isError) {
