@@ -3,18 +3,40 @@ import { Footer } from "@/components/layout/footer";
 import { ProductGrid } from "@/components/products/product-grid";
 import { type Product } from "@/types/medusa";
 
-// Placeholder data for static UI development
+// Placeholder data for static UI development - Organic products for MALABRO
+const organicProductNames = [
+  'Tomates Bio Fraîches',
+  'Salade Verte Bio',
+  'Carottes Bio du Terroir',
+  'Épinards Bio Locaux',
+  'Concombres Bio',
+  'Aubergines Bio',
+  'Poivrons Bio Colorés',
+  'Courgettes Bio Fraîches'
+];
+
+const organicProductHandles = [
+  'tomates-bio-fraiches',
+  'salade-verte-bio',
+  'carottes-bio-terroir',
+  'epinards-bio-locaux',
+  'concombres-bio',
+  'aubergines-bio',
+  'poivrons-bio-colores',
+  'courgettes-bio-fraiches'
+];
+
 const placeholderProducts: Product[] = Array.from({ length: 8 }).map((_, i) => ({
   id: `prod_${i + 1}`,
-  title: `Placeholder Product ${i + 1}`,
-  handle: `placeholder-product-${i + 1}`,
+  title: organicProductNames[i],
+  handle: organicProductHandles[i],
   thumbnail: `/placeholder.svg?w=400&h=400`,
   variants: [{
     id: `variant_${i + 1}`,
-    title: 'Default Variant',
+    title: 'Bio Certifié',
     prices: [{ 
-      amount: (i + 1) * 1500, // Example price
-      currency_code: 'usd' 
+      amount: (i + 1) * 125000, // CFA Francs pricing (1250, 2500, 3750, etc.)
+      currency_code: 'xof' // West African CFA Franc
     }],
     // Mock other variant properties as needed
     created_at: new Date().toISOString(),

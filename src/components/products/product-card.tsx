@@ -1,7 +1,10 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import Image from "next/image";
-import Link from "next/link";
-import { type Product } from "@/types/medusa";
+import { Card, CardContent, CardDescription, CardFooter, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { type Product } from '@/types/medusa';
+import Image from 'next/image';
+import Link from 'next/link';
+import { ShoppingCart } from 'lucide-react';
 
 interface ProductCardProps {
   product: Product;
@@ -9,6 +12,17 @@ interface ProductCardProps {
 
 // Helper to format the price
 const formatPrice = (amount: number, currencyCode: string) => {
+  // Handle CFA Francs (XOF) for Ivorian market
+  if (currencyCode.toLowerCase() === 'xof') {
+    return new Intl.NumberFormat('fr-CI', {
+      style: 'currency',
+      currency: 'XOF',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount / 100);
+  }
+  
+  // Default formatting for other currencies
   return new Intl.NumberFormat('fr-FR', {
     style: 'currency',
     currency: currencyCode,
@@ -41,16 +55,38 @@ export function ProductCard({ product }: ProductCardProps) {
               <span className="text-slate-500">No image</span>
             </div>
           )}
+          {/* Organic Certification Badge */}
+          <Badge 
+            variant="secondary" 
+            className="absolute top-2 left-2 bg-green-100 text-green-800 border-green-200 hover:bg-green-200"
+          >
+            🌿 Bio Certifié
+          </Badge>
         </CardContent>
-        <CardFooter className="pt-4 flex-col items-start">
-          <CardTitle className="text-lg truncate mb-1">{product.title}</CardTitle>
-          <CardDescription className="text-base font-semibold text-slate-800">
-            {firstPrice ? (
-              formatPrice(firstPrice.amount, firstPrice.currency_code)
-            ) : (
-              <span className="text-slate-500">Price not available</span>
-            )}
-          </CardDescription>
+        <CardFooter className="pt-4 flex-col items-start space-y-3">
+          <div className="w-full">
+            <CardTitle className="text-lg truncate mb-1">{product.title}</CardTitle>
+            <CardDescription className="text-base font-semibold text-slate-800">
+              {firstPrice ? (
+                formatPrice(firstPrice.amount, firstPrice.currency_code)
+              ) : (
+                <span className="text-slate-500">Price not available</span>
+              )}
+            </CardDescription>
+          </div>
+          {/* Add to Cart Button */}
+          <Button 
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-medium"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              // TODO: Implement add to cart functionality
+              console.log('Add to cart:', product.title);
+            }}
+          >
+            <ShoppingCart className="w-4 h-4 mr-2" />
+            Ajouter au Panier
+          </Button>
         </CardFooter>
       </Card>
     </Link>

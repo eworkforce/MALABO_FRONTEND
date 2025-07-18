@@ -11,7 +11,7 @@ const fetchCategories = async (): Promise<ProductCategory[]> => {
   return product_categories;
 };
 
-const priceRanges = ['Under $50', '$50 - $100', '$100 - $200', 'Over $200'];
+const priceRanges = ['Moins de 2 500 FCFA', '2 500 - 5 000 FCFA', '5 000 - 10 000 FCFA', 'Plus de 10 000 FCFA'];
 
 interface ProductFiltersProps {
   selectedCategories: string[];
