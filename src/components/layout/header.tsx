@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { User, ShoppingBag } from 'lucide-react';
 import { useCartStore } from '@/lib/store/cart-store';
 
@@ -11,6 +12,13 @@ export function Header() {
       <div className="container flex h-14 items-center">
         <div className="mr-4 hidden md:flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
+            <Image
+              src="/logo_malabro.jpg"
+              alt="MALABRO Logo"
+              width={32}
+              height={32}
+              className="rounded-full"
+            />
             <span className="font-bold sm:inline-block">MALABRO</span>
           </Link>
           <nav className="flex items-center space-x-6 text-sm font-medium">

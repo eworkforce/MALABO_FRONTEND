@@ -1,5 +1,4 @@
 import { HeroBanner } from "@/components/layout/hero-banner";
-import { Footer } from "@/components/layout/footer";
 import { ProductGrid } from "@/components/products/product-grid";
 import { type Product } from "@/types/medusa";
 
@@ -88,7 +87,6 @@ export default function HomePage() {
           <ProductGrid products={placeholderProducts} />
         </div>
       </section>
-      <Footer />
     </main>
   );
 }

@@ -23,8 +23,8 @@ export default function RootLayout({
         className={`${GeistSans.variable} ${GeistMono.variable} antialiased`}
       >
         <QueryProvider>
-          <div className="min-h-screen bg-gray-50">
-            <div className="relative flex min-h-screen flex-col max-w-7xl mx-auto bg-white shadow-2xl">
+          <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 py-4 px-4">
+            <div className="relative flex min-h-screen flex-col max-w-7xl mx-auto bg-white shadow-2xl rounded-lg overflow-hidden">
               <Header />
               <main className="flex-1">{children}</main>
               <Footer />
