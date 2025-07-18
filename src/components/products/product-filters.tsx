@@ -16,13 +16,21 @@ const priceRanges = ['Under $50', '$50 - $100', '$100 - $200', 'Over $200'];
 interface ProductFiltersProps {
   selectedCategories: string[];
   onCategoryChange: (categoryId: string, isChecked: boolean) => void;
+  categories?: ProductCategory[]; // Optional placeholder categories
 }
 
-export function ProductFilters({ selectedCategories, onCategoryChange }: ProductFiltersProps) {
-  const { data: categories, isLoading, isError } = useQuery<ProductCategory[]>({
+export function ProductFilters({ 
+  selectedCategories, 
+  onCategoryChange, 
+  categories: placeholderCategories 
+}: ProductFiltersProps) {
+  const { data, isLoading, isError } = useQuery<ProductCategory[]>({
     queryKey: ['product_categories'],
     queryFn: fetchCategories,
+    enabled: !placeholderCategories, // Disable query if placeholder categories are provided
   });
+
+  const categories = placeholderCategories || data;
 
   return (
     <aside className="w-full lg:w-64">
@@ -32,8 +40,8 @@ export function ProductFilters({ selectedCategories, onCategoryChange }: Product
           <AccordionTrigger>Category</AccordionTrigger>
           <AccordionContent>
             <div className="grid gap-2">
-              {isLoading && <span>Loading categories...</span>}
-              {isError && <span>Could not fetch categories.</span>}
+              {isLoading && !placeholderCategories && <span>Loading categories...</span>}
+              {isError && !placeholderCategories && <span>Could not fetch categories.</span>}
               {categories?.map((category) => (
                 <div key={category.id} className="flex items-center space-x-2">
                   <Checkbox 

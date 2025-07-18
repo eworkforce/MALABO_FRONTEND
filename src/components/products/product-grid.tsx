@@ -12,13 +12,16 @@ const fetchProducts = async (limit?: number, category_id?: string[]): Promise<Pr
   return products;
 };
 
-export function ProductGrid({ limit, category_id }: { limit?: number, category_id?: string[] }) {
-  const { data, isLoading, isError, error } = useQuery<Product[]>({
+export function ProductGrid({ limit, category_id, products: placeholderProducts }: { limit?: number, category_id?: string[], products?: Product[] }) {
+  const { data, isLoading, isError, error } = useQuery<Product[], Error>({
     queryKey: ["products", limit, category_id],
     queryFn: () => fetchProducts(limit, category_id),
+    enabled: !placeholderProducts, // Disable query if placeholder products are provided
   });
 
-  if (isLoading) {
+  const products = placeholderProducts || data;
+
+  if (isLoading && !placeholderProducts) {
     return (
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {Array.from({ length: 8 }).map((_, i) => (
@@ -34,7 +37,7 @@ export function ProductGrid({ limit, category_id }: { limit?: number, category_i
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-      {data
+      {products
         ?.filter((product) => product.id)
         .map((product) => (
           <ProductCard key={product.id} product={product} />
